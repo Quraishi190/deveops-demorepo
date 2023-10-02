@@ -1,0 +1,22 @@
+---
+- name: playbook to setup apache on ubuntu
+  hosts: localhost
+  become: true
+
+  tasks:
+
+   - name: Install apache2
+     apt: name=apache2 state=present
+     when: pkg == "apache2"
+
+   - name: copy index.html file
+     copy:
+         src: index.html
+         dest: /var/www/html/index.html
+         owner: root
+         group: root
+         mode:  0644
+
+   - name: ensure apache is running
+     service:
+       name: apache2 state=restarted
